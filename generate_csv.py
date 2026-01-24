@@ -12,11 +12,13 @@ base_prices = {
     'GLD': 100
 }
 
+# Set random seed once for reproducibility (before the loop)
+np.random.seed(42)
+
 # Generate data for each symbol
 for symbol, base_price in base_prices.items():
     # Generate price series with random walk
     prices = [base_price]
-    np.random.seed(42)  # For reproducibility
     
     for i in range(1, len(dates)):
         # Random daily change (normal distribution)
