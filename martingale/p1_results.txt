@@ -1,0 +1,52 @@
+================================================================================
+PROJECT 1: MARTINGALE - EXPERIMENTAL RESULTS
+================================================================================
+
+EXPERIMENT 1: UNLIMITED BANKROLL
+--------------------------------------------------------------------------------
+Question 1: Probability of winning exactly $80
+  Answer: 1.000000 (1000 out of 1000 episodes)
+
+Question 2: Expected value after 1000 spins
+  Answer: $80.00
+
+Question Set 3: Standard deviation lines analysis
+  Upper std dev (mean + stdev) max value: $2078.84
+  Lower std dev (mean - stdev) min value: $-2072.77
+  Upper line stabilized: True
+  Lower line stabilized: True
+  Lines converge (distance stable): True
+  Final distance between lines: $0.00
+
+
+================================================================================
+
+EXPERIMENT 2: LIMITED BANKROLL ($256)
+--------------------------------------------------------------------------------
+Question 4: Probability of winning exactly $80
+  Answer: 0.651000 (651 out of 1000 episodes)
+
+Question 5: Expected value after 1000 spins
+  Answer: $-36.62
+
+Question Set 6: Standard deviation lines analysis
+  Upper std dev (mean + stdev) max value: $123.31
+  Lower std dev (mean - stdev) min value: $-196.71
+  Upper line stabilized: True
+  Lower line stabilized: True
+  Lines converge (distance stable): True
+  Final distance between lines: $319.85
+
+
+================================================================================
+
+ADDITIONAL STATISTICS
+--------------------------------------------------------------------------------
+Experiment 1 - Standard deviation: $0.00
+Experiment 2 - Standard deviation: $159.93
+
+================================================================================
+NOTE: Question 7 asks about the benefits of using expected values.
+This is a conceptual question that should be answered based on
+your understanding of statistics and the experimental results above.
+================================================================================

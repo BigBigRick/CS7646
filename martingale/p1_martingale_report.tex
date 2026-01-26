@@ -1,0 +1,135 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{{./}}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{float}
+
+\geometry{margin=1in}
+
+\title{Project 1: Martingale}
+\author{ryang386}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Overview}
+
+This project investigates a classic gambling approach known as the Martingale system through computational experiments. The core idea is straightforward: place a \$1 wager on black at roulette, double the stake after any loss, and reset to \$1 after winning. Two scenarios are examined - one where the player has access to infinite funds, and another where a \$256 ceiling exists.
+
+\section{Experiment 1 Analysis}
+
+\subsection{Visualization of Individual Runs}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figure1.png}
+\caption{Trajectory of 10 separate gambling sessions without bankroll constraints}
+\end{figure}
+
+Figure 1 illustrates how different sessions progress over time. Each line represents one complete run of the betting system.
+
+\subsection{Aggregate Statistics}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figure2.png}
+\caption{Average performance across 1000 trials with deviation bounds}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figure3.png}
+\caption{Central tendency across 1000 trials with deviation bounds}
+\end{figure}
+
+\subsection{Q1: Success Rate Calculation}
+
+From running 1000 independent trials, every single one achieved the \$80 goal before exhausting 1000 spins. The empirical success probability is therefore:
+
+\[
+\frac{1000}{1000} = 1.0
+\]
+
+This outcome makes sense mathematically. Without any funding cap, a player can perpetually double their wager. Since winning eventually occurs (the probability of losing forever approaches zero), the system guarantees eventual profit. Each winning cycle nets exactly \$1 regardless of how many losses preceded it.
+
+\subsection{Q2: Long-term Value}
+
+The arithmetic mean of terminal wealth across all trials equals \textbf{\$80.00}.
+
+Given that every trial hits the target and halts at that point, this result follows directly. No variance exists in the final outcomes when unlimited resources are available.
+
+\subsection{Q3: Dispersion Analysis}
+
+Looking at Figures 2 and 3, both the upper and lower deviation boundaries collapse toward \$80 as spins increase.
+
+Why does this happen? Once a trial reaches \$80, it stops and that value persists. As more trials complete successfully, the spread in active values shrinks. Eventually all trials have finished, leaving zero variability. The boundaries meet at the target value because every path leads to the same endpoint.
+
+\section{Experiment 2 Analysis}
+
+Now consider what happens with realistic constraints - specifically a \$256 maximum loss threshold.
+
+\subsection{Results with Financial Limits}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figure4.png}
+\caption{Average trajectory with \$256 loss ceiling}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figure5.png}
+\caption{Central tendency with \$256 loss ceiling}
+\end{figure}
+
+\subsection{Q4: Adjusted Success Rate}
+
+With funding limitations, only 651 out of 1000 trials reached the goal:
+
+\[
+\frac{651}{1000} = 0.651
+\]
+
+The drop from 100\% to 65.1\% reflects a fundamental change. When funds run dry during a losing streak, recovery becomes impossible. A sequence of 8+ consecutive losses (requiring a \$256 bet to continue) ends the game prematurely.
+
+\subsection{Q5: Adjusted Long-term Value}
+
+The mean terminal value is now \textbf{-\$36.62}.
+
+This negative figure emerges from asymmetric outcomes:
+\begin{itemize}
+\item Winners gain \$80
+\item Losers forfeit \$256
+\end{itemize}
+
+Quick verification: $0.651 \times 80 + 0.349 \times (-256) \approx 52.08 - 89.34 = -37.26$
+
+The simulation result aligns with this calculation. Despite winning more often than losing, the magnitude of losses dominates.
+
+\subsection{Q6: Dispersion Under Constraints}
+
+The deviation lines in Figures 4 and 5 behave differently than before. They level off but remain apart - roughly \$320 separates them at equilibrium.
+
+This separation persists because outcomes cluster around two distinct values: \$80 (winners) and -\$256 (losers). Unlike the unconstrained case where everyone converges to one point, here the population splits into two groups. High variance is the permanent state because the gap between success and failure never closes.
+
+\section{Q7: Why Use Expected Values?}
+
+Relying on individual trial outcomes would be problematic for several reasons:
+
+\textbf{Noise reduction:} Any single run might succeed or fail based on luck. Aggregating many runs filters out random fluctuations and reveals underlying patterns.
+
+\textbf{Representative behavior:} One fortunate gambler hitting \$80 quickly tells us little. The average across thousands of gamblers tells us what typically happens.
+
+\textbf{Risk assessment:} Standard deviations and confidence intervals require multiple data points. These metrics help quantify uncertainty in ways a single number cannot.
+
+\textbf{Strategy evaluation:} A trading or betting approach should be judged by expected performance, not cherry-picked examples. The -\$36.62 expected value in Experiment 2 conclusively shows the strategy loses money over time, even though individual runs often succeed.
+
+\section{Final Thoughts}
+
+These experiments reveal a classic gambling fallacy. The Martingale system appears foolproof when resources are unlimited - and indeed, it mathematically guarantees success under those conditions. However, real-world constraints fundamentally alter the picture. With a \$256 bankroll, expected returns turn negative despite a 65\% win rate. The lesson extends beyond casinos: any strategy requiring unlimited capital to guarantee success is not truly viable.
+
+\end{document}
