@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习要点详解</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            line-height: 1.8;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 5px solid #3498db;
+            padding-left: 15px;
+            font-size: 1.6em;
+        }
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        p {
+            margin: 15px 0;
+            text-align: justify;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+            color: #e74c3c;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: "Consolas", "Monaco", monospace;
+            line-height: 1.5;
+        }
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        tr:hover {
+            background: #e3f2fd;
+        }
+        ul, ol {
+            padding-left: 30px;
+            margin: 15px 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #ecf0f1;
+            margin: 30px 0;
+        }
+        blockquote {
+            border-left: 4px solid #3498db;
+            margin: 20px 0;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            color: #555;
+            border-radius: 4px;
+        }
+        .emoji {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>第1.7章：投资组合优化 - 超详细解释</h1>
+<p></p>
+<h2>📊 第一部分：投资组合构建（Portfolio Construction）</h2>
+<p></p>
+<h3>什么是投资组合？</h3>
+<p></p>
+<strong>生活化理解：</strong>
+<p>想象你有100万元，你不想把所有钱都投在一只股票上（风险太大），而是想分散投资：</p>
+<ul>
+<li>40% 投SPY（市场指数）</li>
+<li>40% 投XOM（石油公司）</li>
+<li>10% 投GOOG（科技公司）</li>
+<li>10% 投GLD（黄金）</li>
+</ul>
+<p></p>
+<p>这就是一个<strong>投资组合</strong>（Portfolio）</p>
+<p></p>
+<h3>为什么要构建投资组合？</h3>
+<p></p>
+<strong>问题：</strong> 为什么不能把所有钱投在一只股票上？
+<ul>
+<li><strong>风险太大</strong>：如果这只股票暴跌，你会损失惨重</li>
+<li><strong>机会有限</strong>：只投一只股票，错过了其他好机会</li>
+</ul>
+<p></p>
+<strong>投资组合的好处：</strong>
+<p>1. <strong>分散风险</strong>：一只股票跌，其他可能涨，降低总风险</p>
+<p>2. <strong>稳定收益</strong>：不同股票互相平衡，收益更稳定</p>
+<p>3. <strong>灵活调整</strong>：可以根据市场变化调整比例</p>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>🔢 第二部分：价格归一化（Normalization）</h2>
+<p></p>
+<h3>什么是归一化？</h3>
+<p></p>
+<strong>生活化理解：</strong>
+<p>不同股票的价格差异很大：</p>
+<ul>
+<li>SPY：100元/股</li>
+<li>GOOG：500元/股</li>
+<li>GLD：80元/股</li>
+</ul>
+<p></p>
+<strong>问题：</strong> 如何公平比较它们的涨跌？
+<p></p>
+<strong>解决方案：归一化</strong>
+<p>把所有股票的价格都"调整"到同一个起点（比如都从1.0开始）</p>
+<p></p>
+<h3>归一化公式</h3>
+<p></p>
+<pre><code>normed = prices / prices[0]
+</code></pre>
+<p></p>
+<strong>拆解：</strong>
+<ul>
+<li><code>prices[0]</code> = 第一天的价格（起始价格）</li>
+<li><code>prices / prices[0]</code> = 每天价格 ÷ 起始价格</li>
+</ul>
+<p></p>
+<strong>例子：</strong>
+<pre><code>日期        SPY价格   归一化后    GOOG价格   归一化后
+<p>1月1日      100       1.0        500        1.0</p>
+<p>1月2日      105       1.05       510        1.02</p>
+<p>1月3日      98        0.98       495        0.99</p>
+</code></pre>
+<p></p>
+<strong>归一化的好处：</strong>
+<ul>
+<li>所有股票都从1.0开始，方便比较</li>
+<li>可以看到相对涨跌幅度</li>
+<li>便于计算投资组合价值</li>
+</ul>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>💰 第三部分：分配资金（Allocation）</h2>
+<p></p>
+<h3>什么是分配（Allocation）？</h3>
+<p></p>
+<strong>生活化理解：</strong>
+<p>你有100万元，要按比例分配：</p>
+<ul>
+<li>SPY：40% = 40万元</li>
+<li>XOM：40% = 40万元</li>
+<li>GOOG：10% = 10万元</li>
+<li>GLD：10% = 10万元</li>
+</ul>
+<p></p>
+<strong>分配列表（allocs）：</strong>
+<pre><code>allocs = [0.4, 0.4, 0.1, 0.1]  # 对应 [SPY, XOM, GOOG, GLD]
+</code></pre>
+<p></p>
+<strong>注意：</strong> 所有分配加起来必须等于1.0（100%）
+<p></p>
+<h3>应用分配</h3>
+<p></p>
+<pre><code>alloced = normed * allocs
+</code></pre>
+<p></p>
+<strong>拆解：</strong>
+<ul>
+<li><code>normed</code> = 归一化后的价格（每只股票都是1.0开始）</li>
+<li><code>allocs</code> = 分配比例 [0.4, 0.4, 0.1, 0.1]</li>
+<li><code>normed * allocs</code> = 每只股票的"权重价格"</li>
+</ul>
+<p></p>
+<strong>例子：</strong>
+<pre><code>日期       SPY归一化   SPY分配后    XOM归一化   XOM分配后
+<p>1月1日     1.0        0.4         1.0        0.4</p>
+<p>1月2日     1.05       0.42        1.02       0.408</p>
+</code></pre>
+<p></p>
+<strong>含义：</strong>
+<ul>
+<li>SPY分配后 = 1.0 × 0.4 = 0.4（表示SPY在组合中占40%）</li>
+<li>如果SPY涨到1.05，分配后 = 1.05 × 0.4 = 0.42（SPY部分涨了5%）</li>
+</ul>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>📈 第四部分：计算持仓价值（Position Values）</h2>
+<p></p>
+<h3>什么是持仓价值？</h3>
+<p></p>
+<strong>生活化理解：</strong>
+<p>你投了40万元在SPY上，如果SPY涨了5%，你的SPY持仓就值42万元</p>
+<p></p>
+<strong>公式：</strong>
+<pre><code>pos_vals = alloced * start_val
+</code></pre>
+<p></p>
+<strong>拆解：</strong>
+<ul>
+<li><code>alloced</code> = 分配后的权重价格</li>
+<li><code>start_val</code> = 起始资金（比如100万元）</li>
+<li><code>pos_vals</code> = 每只股票的实际持仓价值</li>
+</ul>
+<p></p>
+<strong>例子：</strong>
+<pre><code>日期       SPY分配后   SPY持仓价值    XOM分配后   XOM持仓价值
+<p>1月1日     0.4        40万          0.4        40万</p>
+<p>1月2日     0.42       42万          0.408       40.8万</p>
+</code></pre>
+<p></p>
+<strong>计算过程：</strong>
+<ul>
+<li>SPY持仓价值 = 0.4 × 100万 = 40万</li>
+<li>如果SPY涨到0.42，持仓价值 = 0.42 × 100万 = 42万</li>
+</ul>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>💼 第五部分：投资组合总价值（Portfolio Value）</h2>
+<p></p>
+<h3>什么是投资组合总价值？</h3>
+<p></p>
+<strong>生活化理解：</strong>
+<p>你的总资产 = SPY持仓 + XOM持仓 + GOOG持仓 + GLD持仓</p>
+<p></p>
+<strong>公式：</strong>
+<pre><code>port_val = pos_vals.sum(axis=1)
+</code></pre>
+<p></p>
+<strong>拆解：</strong>
+<ul>
+<li><code>pos_vals</code> = 每只股票的持仓价值（DataFrame）</li>
+<li><code>.sum(axis=1)</code> = 按行求和（把每只股票的价值加起来）</li>
+<li><code>port_val</code> = 每天的投资组合总价值</li>
+</ul>
+<p></p>
+<strong>例子：</strong>
+<pre><code>日期       SPY持仓    XOM持仓    GOOG持仓   GLD持仓   组合总价值
+<p>1月1日     40万       40万       10万       10万      100万</p>
+<p>1月2日     42万       40.8万     10.2万     10.1万    103.1万</p>
+<p>1月3日     39.2万     39.6万     9.9万      9.95万    98.65万</p>
+</code></pre>
+<p></p>
+<strong>含义：</strong>
+<ul>
+<li>1月1日：总价值 = 100万（起始资金）</li>
+<li>1月2日：总价值 = 103.1万（赚了3.1万，3.1%）</li>
+<li>1月3日：总价值 = 98.65万（亏了1.35万，-1.35%）</li>
+</ul>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>📊 第六部分：投资组合日收益率（Portfolio Daily Returns）</h2>
+<p></p>
+<h3>什么是投资组合日收益率？</h3>
+<p></p>
+<strong>生活化理解：</strong>
+<p>和单只股票的日收益率一样，但这是整个投资组合的收益率</p>
+<p></p>
+<strong>公式：</strong>
+<pre><code>daily_rets[1:] = (port_val[1:] / port_val[:-1].values) - 1
+</code></pre>
+<p></p>
+<strong>拆解：</strong>
+<ul>
+<li><code>port_val[1:]</code> = 今天及以后的组合价值</li>
+<li><code>port_val[:-1]</code> = 昨天及以前的组合价值</li>
+<li><code>port_val[1:] / port_val[:-1]</code> = 今天价值 ÷ 昨天价值</li>
+<li><code>- 1</code> = 减去1，得到增长率</li>
+</ul>
+<p></p>
+<strong>例子：</strong>
+<pre><code>日期        组合价值    计算过程              日收益率
+<p>1月1日      100万      (第一行，设为0)       0%</p>
+<p>1月2日      103.1万    (103.1/100) - 1      3.1%</p>
+<p>1月3日      98.65万    (98.65/103.1) - 1    -4.3%</p>
+</code></pre>
+<p></p>
+<strong>注意：</strong>
+<ul>
+<li>第一天的日收益率设为0（没有前一天）</li>
+<li>日收益率可以是正数（赚钱）或负数（亏钱）</li>
+</ul>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>📈 第七部分：累计收益率（Cumulative Return）</h2>
+<p></p>
+<h3>什么是累计收益率？</h3>
+<p></p>
+<strong>生活化理解：</strong>
+<p>从开始投资到现在，总共赚了（或亏了）多少百分比</p>
+<p></p>
+<strong>公式：</strong>
+<pre><code>cum_ret = (port_val[-1] / port_val[0]) - 1
+</code></pre>
+<p></p>
+<strong>拆解：</strong>
+<ul>
+<li><code>port_val[-1]</code> = 最后一天的投资组合价值</li>
+<li><code>port_val[0]</code> = 第一天的投资组合价值（起始资金）</li>
+<li><code>port_val[-1] / port_val[0]</code> = 最终价值 ÷ 起始价值</li>
+<li><code>- 1</code> = 减去1，得到总收益率</li>
+</ul>
+<p></p>
+<strong>例子：</strong>
+<pre><code>起始价值：100万
+<p>最终价值：150万</p>
+<p>累计收益率 = (150/100) - 1 = 0.5 = 50%</p>
+</code></pre>
+<p></p>
+<strong>含义：</strong>
+<ul>
+<li><strong>累计收益率 > 0</strong>：总体赚钱</li>
+<li><strong>累计收益率 < 0</strong>：总体亏钱</li>
+<li><strong>累计收益率 = 0</strong>：不赚不亏</li>
+</ul>
+<p></p>
+<strong>实际应用：</strong>
+<ul>
+<li>如果累计收益率 = 0.3（30%），说明3年赚了30%</li>
+<li>如果累计收益率 = -0.2（-20%），说明亏了20%</li>
+</ul>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>📊 第八部分：平均日收益率（Average Daily Return）</h2>
+<p></p>
+<h3>什么是平均日收益率？</h3>
+<p></p>
+<strong>生活化理解：</strong>
+<p>把所有日收益率加起来，除以天数，得到平均每天赚（或亏）多少</p>
+<p></p>
+<strong>公式：</strong>
+<pre><code>avg_daily_ret = daily_rets.mean()
+</code></pre>
+<p></p>
+<strong>例子：</strong>
+<pre><code>100天的日收益率：+2%, -1%, +0.5%, -0.3%, +1.2%, ...
+<p>平均日收益率 = 0.05% = 平均每天赚0.05%</p>
+</code></pre>
+<p></p>
+<strong>含义：</strong>
+<ul>
+<li><strong>平均日收益率 > 0</strong>：平均每天赚钱</li>
+<li><strong>平均日收益率 < 0</strong>：平均每天亏钱</li>
+<li><strong>平均日收益率 = 0</strong>：平均不赚不亏</li>
+</ul>
+<p></p>
+<strong>实际应用：</strong>
+<ul>
+<li>如果平均日收益率 = 0.001（0.1%），一年约252个交易日</li>
+<li>年化收益率 ≈ 0.001 × 252 = 25.2%（复利计算会更准确）</li>
+</ul>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>📉 第九部分：日收益率标准差（Standard Deviation of Daily Returns）</h2>
+<p></p>
+<h3>什么是标准差？</h3>
+<p></p>
+<strong>生活化理解：</strong>
+<p>标准差衡量"日收益率有多分散"</p>
+<ul>
+<li><strong>标准差小</strong> = 收益率都集中在均值附近 = <strong>风险低，稳定</strong></li>
+<li><strong>标准差大</strong> = 收益率分散，有时大涨有时大跌 = <strong>风险高，不稳定</strong></li>
+</ul>
+<p></p>
+<strong>公式：</strong>
+<pre><code>std_daily_ret = daily_rets.std()
+</code></pre>
+<p></p>
+<strong>例子对比：</strong>
+<pre><code>组合A（稳定）：
+<p>日收益率总是在 0% ± 1% 之间</p>
+<p>标准差 = 0.5%  → 风险低</p>
+<p></p>
+<p>组合B（波动大）：</p>
+<p>日收益率在 -5% 到 +5% 之间乱跳</p>
+<p>标准差 = 3%    → 风险高</p>
+</code></pre>
+<p></p>
+<strong>实际意义：</strong>
+<ul>
+<li>标准差是衡量<strong>风险</strong>的重要指标</li>
+<li>标准差越大，投资组合越不稳定</li>
+<li>保守投资者应该选择标准差小的组合</li>
+</ul>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>🎯 第十部分：夏普比率（Sharpe Ratio）- 最重要！</h2>
+<p></p>
+<h3>什么是夏普比率？</h3>
+<p></p>
+<strong>生活化理解：</strong>
+<p>夏普比率衡量"每承担一单位风险，能获得多少超额收益"</p>
+<p></p>
+<strong>问题：</strong>
+<ul>
+<li>组合A：年收益20%，但波动很大（风险高）</li>
+<li>组合B：年收益15%，但很稳定（风险低）</li>
+</ul>
+<p></p>
+<p>哪个更好？<strong>夏普比率帮你判断！</strong></p>
+<p></p>
+<h3>夏普比率公式</h3>
+<p></p>
+<pre><code>SR = sqrt(k) * mean(daily_rets - daily_rf) / std(daily_rets)
+</code></pre>
+<p></p>
+<strong>拆解：</strong>
+<ul>
+<li><code>daily_rets</code> = 日收益率</li>
+<li><code>daily_rf</code> = 日无风险利率（通常设为0）</li>
+<li><code>mean(daily_rets - daily_rf)</code> = 平均超额收益</li>
+<li><code>std(daily_rets)</code> = 日收益率标准差（风险）</li>
+<li><code>sqrt(k)</code> = 年化因子（k=252，一年约252个交易日）</li>
+</ul>
+<p></p>
+<strong>简化理解：</strong>
+<pre><code>夏普比率 = 年化超额收益 / 年化风险
+</code></pre>
+<p></p>
+<h3>夏普比率的含义</h3>
+<p></p>
+<tr><td>夏普比率</td><td>含义</td><td>评价</td></tr>
+<tr><td><hr><hr><hr></td><td><hr><hr></td><td><hr><hr></td></tr>
+<tr><td><strong>SR > 1</strong></td><td>很好</td><td>收益远高于风险</td></tr>
+<tr><td><strong>SR = 1</strong></td><td>好</td><td>收益与风险平衡</td></tr>
+<tr><td><strong>SR = 0.5</strong></td><td>一般</td><td>收益略高于风险</td></tr>
+<tr><td><strong>SR < 0</strong></td><td>差</td><td>收益不如无风险投资</td></tr>
+<p></p>
+<strong>实际例子：</strong>
+<pre><code>组合A：
+<ul>
+<li>年化收益：20%</li>
+<li>年化风险（标准差）：15%</li>
+<li>夏普比率 = 20% / 15% = 1.33  → 很好！</li>
+</ul>
+<p></p>
+<p>组合B：</p>
+<ul>
+<li>年化收益：25%</li>
+<li>年化风险（标准差）：30%</li>
+<li>夏普比率 = 25% / 30% = 0.83  → 一般</li>
+</ul>
+<p></p>
+<p>结论：组合A更好（虽然收益低，但风险更小）</p>
+</code></pre>
+<p></p>
+<h3>为什么夏普比率重要？</h3>
+<p></p>
+<strong>核心思想：</strong>
+<ul>
+<li><strong>不是收益越高越好</strong>，而是<strong>风险调整后的收益</strong>越高越好</li>
+<li>夏普比率帮你找到"性价比"最高的投资组合</li>
+</ul>
+<p></p>
+<strong>实际应用：</strong>
+<ul>
+<li>比较不同投资组合</li>
+<li>优化投资组合（最大化夏普比率）</li>
+<li>评估基金经理的表现</li>
+</ul>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>🔧 第十一部分：投资组合优化（Portfolio Optimization）</h2>
+<p></p>
+<h3>什么是投资组合优化？</h3>
+<p></p>
+<strong>生活化理解：</strong>
+<p>你有4只股票（SPY, XOM, GOOG, GLD），如何分配资金，让投资组合的<strong>夏普比率最大</strong>？</p>
+<p></p>
+<strong>问题：</strong>
+<ul>
+<li>应该40% SPY + 40% XOM + 10% GOOG + 10% GLD？</li>
+<li>还是25% + 25% + 25% + 25%？</li>
+<li>还是其他比例？</li>
+</ul>
+<p></p>
+<strong>优化目标：</strong>
+<p>找到最优的分配比例，使得：</p>
+<ul>
+<li><strong>夏普比率最大</strong>（风险调整后的收益最高）</li>
+<li><strong>所有分配加起来 = 1.0</strong>（100%）</li>
+<li><strong>每个分配 ≥ 0</strong>（不能做空，至少在这个练习中）</li>
+</ul>
+<p></p>
+<h3>优化方法</h3>
+<p></p>
+<strong>步骤：</strong>
+<p>1. 定义目标函数：最大化夏普比率（或最小化负夏普比率）</p>
+<p>2. 定义约束条件：</p>
+<ul>
+<li>所有分配加起来 = 1.0</li>
+<li>每个分配在 0 到 1 之间</li>
+</ul>
+<p>3. 使用优化算法（如scipy.optimize.minimize）求解</p>
+<p></p>
+<strong>例子：</strong>
+<pre><code>初始分配：[0.4, 0.4, 0.1, 0.1]
+<p>夏普比率：1.2</p>
+<p></p>
+<p>优化后分配：[0.3, 0.2, 0.3, 0.2]</p>
+<p>夏普比率：1.5  → 更好！</p>
+</code></pre>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>🎯 实际应用场景</h2>
+<p></p>
+<h3>场景1：评估投资组合表现</h3>
+<p></p>
+<strong>步骤：</strong>
+<p>1. 构建投资组合（选择股票和分配）</p>
+<p>2. 计算投资组合价值</p>
+<p>3. 计算累计收益率</p>
+<p>4. 计算夏普比率</p>
+<p></p>
+<strong>决策：</strong>
+<ul>
+<li>累计收益率 > 0 且夏普比率 > 1 → <strong>好组合！</strong></li>
+<li>累计收益率 < 0 或夏普比率 < 0 → <strong>需要调整</strong></li>
+</ul>
+<p></p>
+<h3>场景2：比较不同投资组合</h3>
+<p></p>
+<strong>方法：</strong>
+<p>1. 构建多个投资组合（不同分配）</p>
+<p>2. 计算每个组合的夏普比率</p>
+<p>3. 选择夏普比率最高的组合</p>
+<p></p>
+<strong>例子：</strong>
+<pre><code>组合A：40% SPY + 40% XOM + 10% GOOG + 10% GLD
+<p>夏普比率：1.2</p>
+<p></p>
+<p>组合B：25% SPY + 25% XOM + 25% GOOG + 25% GLD</p>
+<p>夏普比率：1.35  → 更好！</p>
+<p></p>
+<p>组合C：100% SPY</p>
+<p>夏普比率：0.8  → 最差</p>
+<p></p>
+<p>结论：选择组合B</p>
+</code></pre>
+<p></p>
+<h3>场景3：优化投资组合</h3>
+<p></p>
+<strong>方法：</strong>
+<p>1. 使用优化算法找到最优分配</p>
+<p>2. 比较优化前后的表现</p>
+<p>3. 根据结果调整投资策略</p>
+<p></p>
+<strong>注意：</strong>
+<ul>
+<li>优化基于历史数据，未来可能不同</li>
+<li>需要考虑交易成本、流动性等因素</li>
+<li>定期重新优化（市场在变化）</li>
+</ul>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>📝 快速记忆口诀</h2>
+<p></p>
+<p>1. <strong>归一化</strong> = 价格 ÷ 起始价格，所有股票从1.0开始</p>
+<p>2. <strong>分配</strong> = 每只股票的投资比例，总和必须=1.0</p>
+<p>3. <strong>持仓价值</strong> = 归一化价格 × 分配 × 起始资金</p>
+<p>4. <strong>组合价值</strong> = 所有持仓价值相加</p>
+<p>5. <strong>日收益率</strong> = (今天/昨天) - 1</p>
+<p>6. <strong>累计收益率</strong> = (最终价值/起始价值) - 1</p>
+<p>7. <strong>平均日收益率</strong> = 所有日收益率的平均值</p>
+<p>8. <strong>标准差</strong> = 衡量风险，越大越危险</p>
+<p>9. <strong>夏普比率</strong> = 年化超额收益 / 年化风险，越大越好</p>
+<p>10. <strong>优化</strong> = 找到夏普比率最大的分配</p>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>🔍 考试/作业常见问题</h2>
+<p></p>
+<h3>Q1: 为什么要归一化价格？</h3>
+<strong>A:</strong> 
+<ul>
+<li>不同股票价格差异大，无法直接比较</li>
+<li>归一化后所有股票从1.0开始，方便计算组合价值</li>
+<li>可以看到相对涨跌幅度</li>
+</ul>
+<p></p>
+<h3>Q2: 分配（allocs）必须满足什么条件？</h3>
+<strong>A:</strong>
+<ul>
+<li>所有分配加起来必须等于1.0（100%）</li>
+<li>每个分配通常在0到1之间（不能做空）</li>
+<li>分配顺序必须与股票顺序对应</li>
+</ul>
+<p></p>
+<h3>Q3: 如何计算投资组合总价值？</h3>
+<strong>A:</strong> 
+<ul>
+<li>先归一化价格</li>
+<li>应用分配得到权重价格</li>
+<li>乘以起始资金得到每只股票的持仓价值</li>
+<li>把所有持仓价值相加</li>
+</ul>
+<p></p>
+<h3>Q4: 累计收益率和平均日收益率有什么区别？</h3>
+<strong>A:</strong>
+<ul>
+<li><strong>累计收益率</strong>：从开始到现在的总收益率（一次性）</li>
+<li><strong>平均日收益率</strong>：平均每天赚多少（每天）</li>
+</ul>
+<p></p>
+<strong>关系：</strong>
+<ul>
+<li>如果平均日收益率 = r，n天后累计收益率 ≈ r × n（简单计算）</li>
+<li>实际应该用复利：(1 + r)^n - 1</li>
+</ul>
+<p></p>
+<h3>Q5: 夏普比率 = 1.5 意味着什么？</h3>
+<strong>A:</strong> 
+<ul>
+<li>年化超额收益是年化风险的1.5倍</li>
+<li>这是很好的表现（SR > 1）</li>
+<li>说明风险调整后的收益很高</li>
+</ul>
+<p></p>
+<h3>Q6: 如何优化投资组合？</h3>
+<strong>A:</strong>
+<p>1. 定义目标：最大化夏普比率</p>
+<p>2. 定义约束：分配总和=1.0，每个分配≥0</p>
+<p>3. 使用优化算法求解</p>
+<p>4. 验证结果（检查是否满足约束）</p>
+<p></p>
+<h3>Q7: 优化后的组合一定比初始组合好吗？</h3>
+<strong>A:</strong> 
+<ul>
+<li><strong>理论上</strong>：是的，因为优化目标是最大化夏普比率</li>
+<li><strong>实际上</strong>：</li>
+<li>优化基于历史数据，未来可能不同</li>
+<li>需要考虑交易成本</li>
+<li>可能需要定期重新优化</li>
+</ul>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>💡 总结</h2>
+<p></p>
+<strong>核心思想：</strong>
+<p>1. <strong>归一化</strong>让不同股票可以公平比较</p>
+<p>2. <strong>分配</strong>决定每只股票的投资比例</p>
+<p>3. <strong>组合价值</strong>反映整体投资表现</p>
+<p>4. <strong>累计收益率</strong>衡量总体收益</p>
+<p>5. <strong>平均日收益率</strong>衡量日常表现</p>
+<p>6. <strong>标准差</strong>衡量风险大小</p>
+<p>7. <strong>夏普比率</strong>是最重要的指标，衡量风险调整后的收益</p>
+<p>8. <strong>优化</strong>帮你找到最佳投资组合</p>
+<p></p>
+<strong>实际应用：</strong>
+<ul>
+<li>构建和评估投资组合</li>
+<li>比较不同投资策略</li>
+<li>优化投资分配</li>
+<li>评估投资表现</li>
+</ul>
+<p></p>
+<strong>记住：</strong> 在AI时代，你不需要死磕代码，但需要理解这些概念，这样才能：
+<ul>
+<li>看懂分析结果</li>
+<li>做出正确决策</li>
+<li>在考试/作业中回答概念性问题</li>
+<li>在实际投资中应用这些知识</li>
+</ul>
+<p></p>
+<p><hr></p>
+<p></p>
+<h2>🔗 与1.6章的联系</h2>
+<p></p>
+<strong>1.6章学的是：</strong>
+<ul>
+<li>单只股票的日收益率</li>
+<li>直方图和统计指标</li>
+<li>股票之间的相关性（Beta, Alpha）</li>
+</ul>
+<p></p>
+<strong>1.7章学的是：</strong>
+<ul>
+<li>多只股票组成的投资组合</li>
+<li>组合的整体表现</li>
+<li>如何优化组合分配</li>
+</ul>
+<p></p>
+<strong>关系：</strong>
+<ul>
+<li>1.6是基础（理解单只股票）</li>
+<li>1.7是应用（构建投资组合）</li>
+<li>两者结合，才能做好投资分析</li>
+</ul>
+<p></p>
+    </div>
+</body>
+</html>
